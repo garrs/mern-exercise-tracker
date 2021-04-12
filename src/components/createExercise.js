@@ -14,6 +14,7 @@ export default class CreateExercise extends Component {
     this.onChangeDate = this.onChangeDate.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
 
+    // do useState here
     this.state = {
       username: '',
       description: '',
@@ -68,6 +69,7 @@ export default class CreateExercise extends Component {
   onSubmit(e) {
     e.preventDefault();
 
+    // learn how to get the states from useStates here
     const exercise = {
       username: this.state.username,
       description: this.state.description,
@@ -94,6 +96,7 @@ export default class CreateExercise extends Component {
               required
               className="form-control"
               value={this.state.username}
+              // check how to do this after doing the react hooks
               onChange={this.onChangeUsername}>
               {
                 this.state.users.map(function(user) {
@@ -127,6 +130,7 @@ export default class CreateExercise extends Component {
           <label>Date: </label>
           <div>
             <DatePicker
+            //  check how this will done as the setter for onChangeDate is different from the others
               selected={this.state.date}
               onChange={this.onChangeDate}
             />
