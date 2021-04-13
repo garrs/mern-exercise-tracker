@@ -22,7 +22,7 @@ app.use(express.json());
 
 // const uri = process.env.ATLAS_URI;
 
-mongoose.connect("PLACEKEYHERE"
+mongoose.connect("mongodb+srv://koolook619:xCjJknVC4bxC5no5@cluster0.9loo9.mongodb.net/test?retryWrites=true&w=majority"
 , { useNewUrlParser: true, useCreateIndex: true }
 );
 const connection = mongoose.connection;
