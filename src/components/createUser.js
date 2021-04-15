@@ -1,60 +1,43 @@
-import React, { Component } from 'react';
+import React, { Component, useState } from 'react';
 import axios from 'axios';
+// import {TextField, Button, Typography, Paper} from '@material-ui/core'
 
-export default class CreateUser extends Component {
-  constructor(props) {
-    super(props);
+const CreateUser = () => {
+  const [userName, setUserName] = useState({
+    userName: ''
+  });
 
-    this.onChangeUsername = this.onChangeUsername.bind(this);
-    this.onSubmit = this.onSubmit.bind(this);
+const handleSubmit = (e) => {
+  e.preventDefault(); 
 
-    this.state = {
-      username: ''
-    }
-  }
+  alert('Added username: ' + userName.userName)
 
-  onChangeUsername(e) {
-    this.setState({
-      username: e.target.value
-    })
-  }
+  axios.post('http://localhost:5000/users/add', userName)
+    .then(res => console.log(res.data));
 
-  onSubmit(e) {
-    e.preventDefault();
 
-    const user = {
-      username: this.state.username
-    }
-
-    console.log(user);
-
-    axios.post('http://localhost:5000/users/add', user)
-      .then(res => console.log(res.data));
-
-    this.setState({
-      username: ''
-    })
-  }
-
-  render() {
-    return (
-      <div>
-        <h3>Create New User</h3>
-        <form onSubmit={this.onSubmit}>
-          <div className="form-group"> 
-            <label>Username: </label>
-            <input  type="text"
-                required
-                className="form-control"
-                value={this.state.username}
-                onChange={this.onChangeUsername}
-                />
-          </div>
-          <div className="form-group">
-            <input type="submit" value="Create User" className="btn btn-primary" />
-          </div>
-        </form>
-      </div>
-    )
-  }
+  setUserName({ ...userName, userName: ''})
 }
+
+  return (
+    <div>
+      <h3>Create New User</h3>
+      <form onSubmit={handleSubmit}>
+        <div className="form-group"> 
+          <label>Username: </label>
+          <input type="text"
+              required
+              className="form-control"
+              value={userName.userName}
+              onChange={(e) => setUserName({ ...userName, userName: e.target.value})}
+              />
+        </div>
+        <div className="form-group">
+          <input type="submit" value="Create User" className="btn btn-primary" />
+        </div>
+      </form>
+    </div>
+  );
+}
+ 
+export default CreateUser;

@@ -1,80 +1,76 @@
-import React, { Component } from 'react';
+import React, { Component, useState, useEffect } from 'react';
 import axios from 'axios';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 
 // convert this to stateful functional component
-export default class CreateExercise extends Component {
-  constructor(props) {
-    super(props);
 
-    this.onChangeUsername = this.onChangeUsername.bind(this);
-    this.onChangeDescription = this.onChangeDescription.bind(this);
-    this.onChangeDuration = this.onChangeDuration.bind(this);
-    this.onChangeDate = this.onChangeDate.bind(this);
-    this.onSubmit = this.onSubmit.bind(this);
+const CreateExercise = () => {
+  const [userName, setUserName] = useState({
+    userName: ''
+  });
+  const [description, setDescription] = useState({
+    description: ''
+  });
+  const [duration, setDuration] = useState({
+    duration: 0
+  });
+  const [date, setDate] = useState({
+    date: new Date()
+  });
+  const [users, setUsers] = useState({
+    users: []
+  });
 
-    // do useState here
-    this.state = {
-      username: '',
-      description: '',
-      duration: 0,
-      date: new Date(),
-      users: []
-    }
-  }
+// export default class CreateExercise extends Component {
+//   constructor(props) {
+//     super(props);
+
+//     this.onChangeUsername = this.onChangeUsername.bind(this);
+//     this.onChangeDescription = this.onChangeDescription.bind(this);
+//     this.onChangeDuration = this.onChangeDuration.bind(this);
+//     this.onChangeDate = this.onChangeDate.bind(this);
+//     this.onSubmit = this.onSubmit.bind(this);
+
+//     // do useState here
+//     this.state = {
+//       username: '',
+//       description: '',
+//       duration: 0,
+//       date: new Date(),
+//       users: []
+//     }
+//   }
 
 // use useEffect instead of componentDidMount
-  componentDidMount() {
-    axios.get('http://localhost:5000/users/')
+
+useEffect(() => {
+  axios.get('http://localhost:5000/users/')
       .then(response => {
         if (response.data.length > 0) {
-          this.setState({
-            users: response.data.map(user => user.username),
-            username: response.data[0].username
-          })
+          // this.setState({
+          //   users: response.data.map(user => user.username),
+          //   username: response.data[0].username
+          // })
+          setUsers({...users, users: response.data.map(user => user.username)})
+          setUserName({...userName, userName: response.data[0].username})
         }
       })
       .catch((error) => {
         console.log(error);
       })
+      // alert('users and userName ' + JSON.stringify(users) + JSON.stringify(userName))
+}) 
 
-  }
-
-// for all the functions, convert setState to that consistent with useState
-  onChangeUsername(e) {
-    this.setState({
-      username: e.target.value
-    })
-  }
-
-  onChangeDescription(e) {
-    this.setState({
-      description: e.target.value
-    })
-  }
-
-  onChangeDuration(e) {
-    this.setState({
-      duration: e.target.value
-    })
-  }
-
-  onChangeDate(date) {
-    this.setState({
-      date: date
-    })
-  }
-
-  onSubmit(e) {
+const handleSubmit = (e) => {
     e.preventDefault();
 
     // learn how to get the states from useStates here
     const exercise = {
-      username: this.state.username,
-      description: this.state.description,
-      duration: this.state.duration,
-      date: this.state.date
+      username: userName.userName,
+      description: description.description,
+      duration: duration.duration,
+      date: date.date
     }
 
     console.log(exercise);
@@ -85,36 +81,35 @@ export default class CreateExercise extends Component {
     window.location = '/';
   }
 
-  render() {
-    return (
+  return (
     <div>
       <h3>Create New Exercise Log</h3>
-      <form onSubmit={this.onSubmit}>
+      <form onSubmit={handleSubmit}>
         <div className="form-group"> 
           <label>Username: </label>
-          <select ref="userInput"
+          {/* <select ref="userInput"
               required
               className="form-control"
-              value={this.state.username}
+              value={userName.userName}
               // check how to do this after doing the react hooks
-              onChange={this.onChangeUsername}>
+              onChange={(e) => setUserName({ ...userName, userName: e.target.value})}>
               {
-                this.state.users.map(function(user) {
-                  return <option 
+                users.users.map((user) => {
+                  <option 
                     key={user}
                     value={user}>{user}
-                    </option>;
+                  </option>;
                 })
               }
-          </select>
+          </select> */}
         </div>
         <div className="form-group"> 
           <label>Description: </label>
           <input  type="text"
               required
               className="form-control"
-              value={this.state.description}
-              onChange={this.onChangeDescription}
+              value={description.description}
+              onChange={(e) => setDescription({ ...description, description: e.target.value})}
               />
         </div>
         <div className="form-group">
@@ -122,8 +117,8 @@ export default class CreateExercise extends Component {
           <input 
               type="text" 
               className="form-control"
-              value={this.state.duration}
-              onChange={this.onChangeDuration}
+              value={duration.duration}
+              onChange={(e) => setDuration({ ...duration, duration: e.target.value})}
               />
         </div>
         <div className="form-group">
@@ -131,8 +126,8 @@ export default class CreateExercise extends Component {
           <div>
             <DatePicker
             //  check how this will done as the setter for onChangeDate is different from the others
-              selected={this.state.date}
-              onChange={this.onChangeDate}
+              selected={date.date}
+              onChange={(date) => setDate({ ...date, date: date})}
             />
           </div>
         </div>
@@ -143,5 +138,6 @@ export default class CreateExercise extends Component {
       </form>
     </div>
     )
-  }
 }
+
+export default CreateExercise;
