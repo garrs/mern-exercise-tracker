@@ -1,4 +1,4 @@
-import React, { Component, useState, useEffect } from 'react';
+import React, { Component, useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
@@ -21,6 +21,7 @@ const CreateExercise = () => {
   const [users, setUsers] = useState({
     users: []
   });
+  // const inputRef = useRef()
 
 // export default class CreateExercise extends Component {
 //   constructor(props) {
@@ -87,7 +88,8 @@ const handleSubmit = (e) => {
       <form onSubmit={handleSubmit}>
         <div className="form-group"> 
           <label>Username: </label>
-          {/* <select ref="userInput"
+          <select 
+              // ref={inputRef}
               required
               className="form-control"
               value={userName.userName}
@@ -97,11 +99,18 @@ const handleSubmit = (e) => {
                 users.users.map((user) => {
                   <option 
                     key={user}
-                    value={user}>{user}
+                    value={user}>
+                  {user}
                   </option>;
                 })
               }
-          </select> */}
+          </select>
+          {/* <input  type="text"
+              required
+              className="form-control"
+              value={description.description}
+              onChange={(e) => setDescription({ ...description, description: e.target.value})}
+              /> */}
         </div>
         <div className="form-group"> 
           <label>Description: </label>
