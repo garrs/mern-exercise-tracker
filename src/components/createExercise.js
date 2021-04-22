@@ -61,7 +61,7 @@ useEffect(() => {
         console.log(error);
       })
       // alert('users and userName ' + JSON.stringify(users) + JSON.stringify(userName))
-}) 
+}, []) 
 
 const handleSubmit = (e) => {
     e.preventDefault();
@@ -97,11 +97,13 @@ const handleSubmit = (e) => {
               onChange={(e) => setUserName({ ...userName, userName: e.target.value})}>
               {
                 users.users.map((user) => {
+                  return(
                   <option 
                     key={user}
                     value={user}>
                   {user}
-                  </option>;
+                  </option>
+                  )
                 })
               }
           </select>
