@@ -1,4 +1,4 @@
-import React, { Component, useState, useEffect, useRef } from 'react';
+import React, {useState, useEffect} from 'react';
 import axios from 'axios';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
@@ -54,7 +54,7 @@ useEffect(() => {
           //   username: response.data[0].username
           // })
           setUsers({...users, users: response.data.map(user => user.username)})
-          setUserName({...userName, userName: response.data[0].username})
+          // setUserName({...userName, userName: response.data[0].username})
         }
       })
       .catch((error) => {
