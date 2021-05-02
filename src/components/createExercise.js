@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 import axios from 'axios';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
+import moment from "moment-timezone";
 
 // convert this to stateful functional component
 
@@ -46,6 +47,8 @@ const CreateExercise = () => {
 // use useEffect instead of componentDidMount
 
 useEffect(() => {
+  // moment.tz.setDefault('Asia/Manila');
+
   axios.get('http://localhost:5000/users/')
       .then(response => {
         if (response.data.length > 0) {
@@ -54,7 +57,7 @@ useEffect(() => {
           //   username: response.data[0].username
           // })
           setUsers({...users, users: response.data.map(user => user.username)})
-          // setUserName({...userName, userName: response.data[0].username})
+          setUserName({...userName, userName: response.data[0].username})
         }
       })
       .catch((error) => {
@@ -62,6 +65,10 @@ useEffect(() => {
       })
       // alert('users and userName ' + JSON.stringify(users) + JSON.stringify(userName))
 }, []) 
+
+// useEffect(() => {
+//   alert('date')
+// }, [date])
 
 const handleSubmit = (e) => {
     e.preventDefault();
@@ -137,6 +144,7 @@ const handleSubmit = (e) => {
           <div>
             <DatePicker
             //  check how this will done as the setter for onChangeDate is different from the others
+              // showTimeSelect
               selected={date.date}
               onChange={(date) => setDate({ ...date, date: date})}
             />
